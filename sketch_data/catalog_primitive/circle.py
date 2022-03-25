@@ -1,93 +1,34 @@
-from _primitive import Primitive
+from typing import List, Dict
+from sketch_data.primitive import Primitive, PrimitiveType
 
-class Circle(Entity):
-    """Circle Entity."""
+from matplotlib import patches
 
-    xCenter: float
-    yCenter: float
-    xDir: float
-    yDir: float
-    radius: float
-    clockwise: bool
 
-    float_ids = ['xCenter', 'yCenter', 'xDir', 'yDir', 'radius']
-    bool_ids = Entity.bool_ids + ['clockwise']
+class Circle(Primitive):
+    """Line Primitive."""
 
-    def __init__(self, entityId, isConstruction=False, xCenter=0, yCenter=0, xDir=1, yDir=0, radius=1, clockwise=False):
-        super(Circle, self).__init__(entityId, isConstruction)
-        self.xCenter = xCenter
-        self.yCenter = yCenter
-        self.xDir = xDir
-        self.yDir = yDir
-        self.radius = radius
-        self.clockwise = clockwise
-
-    @property
-    def type(self):
-        return EntityType.Circle
-
-    def get_subnode_ids(self):
-        return (self.entityId + '.center',)
-
-    @staticmethod
-    def get_subnode_types():
-        return (SubnodeType.SN_Center,)
-
-    def to_dict(self):
-        return {
-            'message': {
-                'entityId': self.entityId,
-                'centerId': self.entityId + '.center',
-                'isConstruction': self.isConstruction,
-                'geometry': {
-                    'message': {
-                        'xCenter': self.xCenter,
-                        'yCenter': self.yCenter,
-                        'xDir': self.xDir,
-                        'yDir': self.yDir,
-                        'radius': self.radius,
-                        'clockwise': self.clockwise
-                    },
-                    'type': 115,
-                    'typeName': 'BTCurveGeometryCircle',
-                },
-            },
-            'type': 4,
-            'typeName': 'BTMSketchCurve',
-        }
-
-    @property
-    def center_point(self):
-        return np.array([self.xCenter, self.yCenter])
-
-    @staticmethod
-    def from_dict(ent_dict):
-        msg_dict = ent_dict['message']
-        geom_dict = msg_dict['geometry']['message']
-
-        return Circle(
-            *_get_entity_common_attributes(ent_dict),
-            float(geom_dict['xCenter']),
-            float(geom_dict['yCenter']),
-            float(geom_dict['xDir']),
-            float(geom_dict['yDir']),
-            float(geom_dict['radius']),
-            bool(geom_dict['clockwise']))
-
-    @staticmethod
-    def from_info(ent_info):
-        xCenter, yCenter = ent_info['center']
-        xDir, yDir = 1.0, 0.0
-        radius = ent_info['radius']
-        clockwise = bool(ent_info.get('clockwise', False))
-
-        return Circle(ent_info['id'],
-                      bool(ent_info.get('isConstruction', False)),
-                      xCenter, yCenter, xDir, yDir,
-                      radius, clockwise)
+    def __init__(self, status_construction: bool = False, center: List = [], radius: float = 0.):
+        super(Circle, self).__init__(elt_type=PrimitiveType.CIRCLE, status_construction=status_construction)
+        self.x_center: float = center[0]
+        self.y_center: float = center[1]
+        self.radius: float = radius
 
     def __repr__(self):
-        return (f"Circle [{self.entityId}] c({self.xCenter}, {self.yCenter}) " +
-                f"d({self.xDir}, {self.yDir}) r({self.radius}) " +
-                f"{'clockwise' if self.clockwise else 'anti-clockwise'}")
+        return f"Circle: Center O({self.x_center}, {self.y_center}), radius=  {self.radius}"
 
+    def point_belongs_to_primitive(self, point: object) -> bool:
+        """Check if a point belongs to the line"""
+
+    def update_parms(self, parms: Dict) -> object:
+        """Update the current parameters"""
+        l_parms = [self.is_construction, self.pnt1_X, self.pnt1_Y, self.pnt2_X, self.pnt2_Y]
+        l_new_parms = ['construction', 'pnt1_X', 'pnt1_Y', 'pnt2_X', 'pnt2_Y']
+        pass
+
+        # for new_p, parms in zip(l_parms, l_new_parms):
+        #     if
+        #     self.is_construction = parms.get('construction', None)
+
+    def plot(self, ax, color='black', linewidth=1):
+        patch = patches.Circle((self.x_center, self.y_center), self.radius, fill=False, linestyle=self._get_linestyle(), color=color)
+        ax.add_patch(patch)
