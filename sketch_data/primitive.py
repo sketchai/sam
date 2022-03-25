@@ -2,9 +2,19 @@ import enum
 import abc
 from typing import Dict
 
+import logging
+
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
+
+
 class PrimitiveType(enum.IntEnum):
     """This enumeration represents the type of the geometries."""
-    Line = 0
+    LINE = 0
+    ARC = 1
+    CIRCLE = 2
+    POINT = 3
 
 
 class Primitive(abc.ABC):
@@ -14,27 +24,30 @@ class Primitive(abc.ABC):
     It is identified by its entity id, a unique string within the sketch.
     """
 
-    def __init__(self, status_construction: bool = False):
+    def __init__(self, elt_type: object, status_construction: bool = False):
         self.status_construction: bool = status_construction
+        self.type: int = elt_type
 
-    def is_construction(self):
+    def _get_linestyle(self):
+        return '--' if self.status_construction else '-'
+
+    def is_construction(self) -> bool:
         return self.status_construction
 
     @property
-    @abc.abstractmethod
-    def type(self) -> object:
-        """Get the concrete type of the underlying entity."""
+    def get_name(self) -> int:
+        return self.type.name
+
+    @property
+    def get_type(self) -> int:
+        return self.type
 
     @abc.abstractmethod
-    def update_parms(self, parms:Dict) -> object:
+    def update_parms(self, parms: Dict) -> object:
         """Update the current parameters"""
 
     @abc.abstractmethod
-    def from_feat(self, feat:object) -> object:
-        """Construct from a shaper object"""
-
-    @abc.abstractmethod
-    def point_belongs_to_primitive(self, point:object) -> object:
+    def point_belongs_to_primitive(self, point: object) -> object:
         """Construct from a shaper object"""
 
     # @abc.abstractmethod
@@ -43,6 +56,3 @@ class Primitive(abc.ABC):
 
     #     The returned dictionary should be compatible with the json representation from onshape.
     #     """
-
-
-
