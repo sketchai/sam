@@ -6,13 +6,14 @@ from typing import Dict, List
 class ConstraintType(enum.IntEnum):
     """This enumeration represents the type of the constraints."""
     HORIZONTAL = 0
-    PARALLEL = 1
-    LENGTH = 2
-    COINCIDENT = 3
-    PERPENDICULAR = 4
-    DIAMETER = 5
-    DISTANCE = 6
-    RADIUS = 7
+    VERTICAL = 1
+    PARALLEL = 2
+    LENGTH = 3
+    COINCIDENT = 4
+    PERPENDICULAR = 5
+    DIAMETER = 6
+    DISTANCE = 7
+    RADIUS = 8
 
 
 
@@ -53,14 +54,9 @@ class Constraint(abc.ABC):
     It is identified by its entity id, a unique string within the sketch.
     """
 
-    def __init__(self, elt_type: str, status_construction: bool = False, references: List = []):
-        self.status_construction: bool = status_construction
+    def __init__(self, elt_type: str, references: List = []):
         self.type: str = elt_type
         self.references: str = references
-
-    def is_construction(self):
-        return self.status_construction
-
 
     def get_name(self) -> int:
         return self.type.name

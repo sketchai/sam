@@ -1,10 +1,21 @@
+from tkinter import HORIZONTAL
 from typing import List
-import pickle
+# import pickle, 
+import sys
 import matplotlib.pyplot as plt
+import logging
 
 from sketch_data.sketch import Sketch
 from sketch_data.primitive import Primitive, PrimitiveType
-from sketch_data.constraint import Constraint
+from sketch_data.constraint import Constraint, ConstraintType
+
+sys.path.append("/home/H03832/Donnees/GAN_CAO/gitlab_pleiade/SketchGraphs_For_EDF/sketchgraphs")
+sys.path.append("../../SketchGraphs_For_EDF/sketchgraphs")
+# from sketchgraphs.data._entity import EntityType
+# from sketchgraphs.data._constraint import ConstraintType, DirectionValue
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
 
 class ShaperGeometryGeneration():
 
@@ -55,39 +66,170 @@ if salome.sg.hasDesktop():
 
     @staticmethod
     def export(i,elt):
-        if elt.type == PrimitiveType.LINE:
-            return ShaperGeometryGeneration().generateLine(i,elt)
-        elif elt.type == PrimitiveType.CIRCLE:
-            return ShaperGeometryGeneration().generateCircle(i,elt)
+        if isinstance(elt,Primitive):
+            if elt.type == PrimitiveType.POINT:
+                return ShaperGeometryGeneration().generatePoint(i,elt)
+            elif elt.type == PrimitiveType.LINE:
+                return ShaperGeometryGeneration().generateLine(i,elt)
+            elif elt.type == PrimitiveType.CIRCLE:
+                return ShaperGeometryGeneration().generateCircle(i,elt)
+            elif elt.type == PrimitiveType.ARC:
+                return ShaperGeometryGeneration().generateArcOfCircle(i,elt)
+            else:
+                return "# Primitive "+str(elt)+": this geometry is not implemented.\n"
+        elif isinstance(elt,Constraint):
+            if elt.type == ConstraintType.HORIZONTAL:
+                print(f"{elt.type}")
+                return ShaperGeometryGeneration().generateHorizontal(elt)
+            elif elt.type == ConstraintType.VERTICAL:
+                print(f"{elt.type}")
+                return ShaperGeometryGeneration().generateVertical(elt)
+            elif elt.type == ConstraintType.PARALLEL:
+                print(f"{elt.type}")
+                return ShaperGeometryGeneration().generateParallel(elt)
+            else:
+                return "# Contrainte "+str(elt)+": this constraint is not implemented.\n"
         else:
+            print("=========================================================================")
+            print(f"{elt}, {elt.type}")
             return None
-            
+
+    @staticmethod
+    def generatePoint(i,elt):
+        """Returns the python code corresponding to the creation of the current line instance in Shaper"""
+        elt.function_name = "SketchPoint_{}".format(i)
+        shaperCode = elt.function_name + "= Sketch_1.addPoint({}, {})\n".format(elt.x, elt.y)
+        if elt.status_construction:
+            shaperCode += elt.function_name + ".setAuxiliary(True)\n".format(i)
+        return shaperCode
+
     @staticmethod
     def generateLine(i,elt):
         """Returns the python code corresponding to the creation of the current line instance in Shaper"""
-        obj = "SketchLine_{}".format(i)
-        shaperCode = obj + " = Sketch_1.addLine("+str(elt.pnt1_X)+","+str(elt.pnt1_Y)+"," \
-                                                     +str(elt.pnt2_X)+","+str(elt.pnt2_Y)+")\n"
+        elt.function_name = "SketchLine_{}".format(i)
+        shaperCode = elt.function_name + " = Sketch_1.addLine("+str(elt.pnt1_X)+","+str(elt.pnt1_Y)+"," \
+                                                 +str(elt.pnt2_X)+","+str(elt.pnt2_Y)+")\n"
+        if elt.status_construction:
+            shaperCode += elt.function_name + ".setAuxiliary(True)\n".format(i)
         return shaperCode
     
     @staticmethod
     def generateCircle(i,elt):
         obj = "SketchCircle_{}".format(i)
         shaperCode = obj + " = Sketch_1.addCircle("+str(elt.x_center)+","+str(elt.y_center)+","+str(elt.radius)+")\n"
+        if elt.status_construction:
+            shaperCode += obj + ".setAuxiliary(True)\n".format(i)
         return shaperCode
 
+    @staticmethod
+    def generateArcOfCircle(i,elt):
+        from math import pi as pi, cos as cos, sin as sin
+        obj = "SketchArc_{}".format(i)
+        shaperCode = obj + " = Sketch_1.addArc({}, {}, {}, {}, {}, {}, False)\n".format(
+        # Coordinates of the center of the arc :
+        elt.x_center, elt.y_center,
+        # Cooordinates of the starting point of the arc, located on the circumference :
+        elt.x_center+elt.radius*cos(elt.angle_start/180*pi),
+        elt.y_center+elt.radius*sin(elt.angle_start/180*pi),
+        # Cooordinates of the ending point of the arc, located on the circumference :
+        elt.x_center+elt.radius*cos(elt.angle_end/180*pi),
+        elt.y_center+elt.radius*sin(elt.angle_end/180*pi)         )
+        if elt.status_construction:
+            shaperCode += obj + ".setAuxiliary(True)\n".format(i)
+        return shaperCode
+    #=================================================================================================================
+    # generation of references to geometries that are used in the constraints :
+    #=================================================================================================================
+    @staticmethod
+    def generateRefToPoint(name):
+        return "{}.coordinates()".format(name)
 
+    @staticmethod
+    def generateRefToLine(name):
+        return "{}.result()".format(name)
+
+    @staticmethod
+    def generateRefToGeometry(elt, name):
+        if isinstance(elt,Primitive):
+            if elt.type == PrimitiveType.POINT:
+                return ShaperGeometryGeneration().generateRefToPoint(name)
+            elif elt.type == PrimitiveType.LINE:
+                return ShaperGeometryGeneration().generateRefToLine(name)
+            else:
+                return None
+        else:
+            return None
+
+    #=================================================================================================================
+    # generation of constraints :
+    #=================================================================================================================
+    @staticmethod
+    def generateHorizontal(elt):
+        shaperCode = "# Error in contrainst horizontal("+str(elt.references)+").\n"
+        if len(elt.references)==2:
+            if elt.references[0].type == PrimitiveType.POINT and elt.references[1].type == PrimitiveType.POINT:
+                name = elt.references[0].function_name
+                function_name_1 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[0], name)
+                name = elt.references[1].function_name
+                function_name_2 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[1], name)
+                shaperCode = "Sketch_1.setVerticalDistance({}, {}, 0)\n".format(function_name_1, function_name_2)
+        elif len(elt.references)==1:
+            if elt.references[0].type == PrimitiveType.LINE:
+                name = elt.references[0].function_name
+                function_name = ShaperGeometryGeneration().generateRefToGeometry(elt.references[0], name)
+                shaperCode = "Sketch_1.setHorizontal({})\n".format(function_name)
+            else:
+                return "# Contrainst horizontal("+str(elt.references[0])+") : this constraint is not implemented.\n"
+        return shaperCode
+
+    @staticmethod
+    def generateVertical(elt):
+        shaperCode = "# Error in contrainst vertical("+str(elt.references)+").\n"
+        if len(elt.references)==2:
+            if elt.references[0].type == PrimitiveType.POINT and elt.references[1].type == PrimitiveType.POINT:
+                name = elt.references[0].function_name
+                function_name_1 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[0], name)
+                name = elt.references[1].function_name
+                function_name_2 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[1], name)
+                shaperCode = "Sketch_1.setHorizontalDistance({}, {}, 0)\n".format(function_name_1, function_name_2)
+        elif len(elt.references)==1:
+            if elt.references[0].type == PrimitiveType.LINE:
+                name = elt.references[0].function_name
+                function_name = ShaperGeometryGeneration().generateRefToGeometry(elt.references[0], name)
+                shaperCode = "Sketch_1.setVertical({})\n".format(function_name)
+            else:
+                return "# Contrainst vertical("+str(elt.references[0])+") : this constraint is not implemented.\n"
+        return shaperCode
+
+    @staticmethod
+    def generateParallel(elt):
+        shaperCode = "# Error in contrainst parallel("+str(elt.references)+").\n"
+        if len(elt.references)==2:
+            if elt.references[0].type == PrimitiveType.LINE and elt.references[1].type == PrimitiveType.LINE:
+                name = elt.references[0].function_name
+                function_name_1 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[0], name)
+                name = elt.references[1].function_name
+                function_name_2 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[1], name)
+                shaperCode = "Sketch_1.setParallel({}, {})\n".format(function_name_1, function_name_2)
+        return shaperCode
+
+# def conv_parallele(entites, contrainte):
+#     ref0 = conv_ref(entites, contrainte.get_references()[0])
+#     ref1 = conv_ref(entites, contrainte.get_references()[1])
+#     return "Sketch_1.setParallel({}, {})\n".format(ref0, ref1)
+
+
+#============================================================================================================
 class ShaperConversion(Sketch):
-
-    # def __init__(self):
-    #      super().__init__()
 
     def export(self, out_path: str):
         """export vers le format python Shaper"""
         with open(out_path, 'wt') as f:
             f.write(ShaperGeometryGeneration.headCode())
             for i,elt in enumerate(self.sequence):
-                f.write(ShaperGeometryGeneration.export(i,elt))
+                print()
+                print("i, elt =", i+1, elt)
+                f.write(ShaperGeometryGeneration.export(i+1,elt))
             f.write(ShaperGeometryGeneration.tailCode())
         f.close()
 
