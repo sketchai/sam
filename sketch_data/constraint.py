@@ -15,15 +15,10 @@ class ConstraintType(enum.IntEnum):
     DISTANCE = 7
     RADIUS = 8
 
-
-
     # PROJECTED = 1
     # MIRROR = 2
     # 
-
-    # VERTICAL = 6
     # TANGENT = 7
-
     # 
     # MIDPOINT = 10
     # EQUAL = 11

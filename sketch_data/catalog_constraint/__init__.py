@@ -1,3 +1,3 @@
 from .dimension_constraint import Length 
-from .geometric_constraint import Horizontal, Parallel, Coincident, Perpendicular
+from .geometric_constraint import Horizontal, Vertical, Parallel, Coincident, Perpendicular
 

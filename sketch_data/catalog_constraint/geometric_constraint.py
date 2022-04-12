@@ -13,6 +13,11 @@ class Horizontal(Constraint):
     def __init__(self, references: List = []):
         super(Horizontal, self).__init__(elt_type=ConstraintType.HORIZONTAL, references=references)
 
+class Vertical(Constraint):
+    """Vertical constraint"""
+
+    def __init__(self, references: List = []):
+        super(Vertical, self).__init__(elt_type=ConstraintType.VERTICAL, references=references)
 
 
 class Parallel(Constraint):
