@@ -9,12 +9,10 @@ from sketch_data.sketch import Sketch
 from sketch_data.primitive import Primitive, PrimitiveType
 from sketch_data.constraint import Constraint, ConstraintType
 
-sys.path.append("/home/H03832/Donnees/GAN_CAO/gitlab_pleiade/SketchGraphs_For_EDF/sketchgraphs")
-sys.path.append("../../SketchGraphs_For_EDF/sketchgraphs")
-# from sketchgraphs.data._entity import EntityType
-# from sketchgraphs.data._constraint import ConstraintType, DirectionValue
+# sys.path.append("/home/H03832/Donnees/GAN_CAO/gitlab_pleiade/SketchGraphs_For_EDF/sketchgraphs")
+# sys.path.append("../../SketchGraphs_For_EDF/sketchgraphs")
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 class ShaperGeometryGeneration():
@@ -87,6 +85,9 @@ if salome.sg.hasDesktop():
             elif elt.type == ConstraintType.PARALLEL:
                 print(f"{elt.type}")
                 return ShaperGeometryGeneration().generateParallel(elt)
+            elif elt.type == ConstraintType.COINCIDENT:
+                print(f"{elt.type}")
+                return ShaperGeometryGeneration().generateCoincident(elt)
             else:
                 return "# Contrainte "+str(elt)+": this constraint is not implemented.\n"
         else:
@@ -107,16 +108,16 @@ if salome.sg.hasDesktop():
     def generateLine(i,elt):
         """Returns the python code corresponding to the creation of the current line instance in Shaper"""
         elt.function_name = "SketchLine_{}".format(i)
-        shaperCode = elt.function_name + " = Sketch_1.addLine("+str(elt.pnt1_X)+","+str(elt.pnt1_Y)+"," \
-                                                 +str(elt.pnt2_X)+","+str(elt.pnt2_Y)+")\n"
+        shaperCode = elt.function_name + " = Sketch_1.addLine("+str(elt.pnt1.x)+","+str(elt.pnt1.y)+"," \
+                                                 +str(elt.pnt2.x)+","+str(elt.pnt2.y)+")\n"
         if elt.status_construction:
             shaperCode += elt.function_name + ".setAuxiliary(True)\n".format(i)
         return shaperCode
     
     @staticmethod
     def generateCircle(i,elt):
-        obj = "SketchCircle_{}".format(i)
-        shaperCode = obj + " = Sketch_1.addCircle("+str(elt.x_center)+","+str(elt.y_center)+","+str(elt.radius)+")\n"
+        elt.function_name = "SketchCircle_{}".format(i)
+        shaperCode = elt.function_name + " = Sketch_1.addCircle("+str(elt.x_center)+","+str(elt.y_center)+","+str(elt.radius)+")\n"
         if elt.status_construction:
             shaperCode += obj + ".setAuxiliary(True)\n".format(i)
         return shaperCode
@@ -124,22 +125,23 @@ if salome.sg.hasDesktop():
     @staticmethod
     def generateArcOfCircle(i,elt):
         from math import pi as pi, cos as cos, sin as sin
-        obj = "SketchArc_{}".format(i)
-        shaperCode = obj + " = Sketch_1.addArc({}, {}, {}, {}, {}, {}, False)\n".format(
-        # Coordinates of the center of the arc :
-        elt.x_center, elt.y_center,
-        # Cooordinates of the starting point of the arc, located on the circumference :
-        elt.x_center+elt.radius*cos(elt.angle_start/180*pi),
-        elt.y_center+elt.radius*sin(elt.angle_start/180*pi),
-        # Cooordinates of the ending point of the arc, located on the circumference :
-        elt.x_center+elt.radius*cos(elt.angle_end/180*pi),
-        elt.y_center+elt.radius*sin(elt.angle_end/180*pi)         )
+        elt.function_name = "SketchArc_{}".format(i)
+        shaperCode = elt.function_name + " = Sketch_1.addArc({}, {}, {}, {}, {}, {}, False)\n". \
+            format(
+                # Coordinates of the center of the arc :
+                elt.x_center, elt.y_center,
+                # Cooordinates of the starting point of the arc, located on the circumference :
+                elt.x_center+elt.radius*cos(elt.angle_start/180*pi),
+                elt.y_center+elt.radius*sin(elt.angle_start/180*pi),
+                # Cooordinates of the ending point of the arc, located on the circumference :
+                elt.x_center+elt.radius*cos(elt.angle_end/180*pi),
+                elt.y_center+elt.radius*sin(elt.angle_end/180*pi)         )
         if elt.status_construction:
-            shaperCode += obj + ".setAuxiliary(True)\n".format(i)
+            shaperCode += elt.function_name + ".setAuxiliary(True)\n".format(i)
         return shaperCode
     #=================================================================================================================
     # generation of references to geometries that are used in the constraints :
-    #=================================================================================================================
+#=================================================================================================================
     @staticmethod
     def generateRefToPoint(name):
         return "{}.coordinates()".format(name)
@@ -149,20 +151,49 @@ if salome.sg.hasDesktop():
         return "{}.result()".format(name)
 
     @staticmethod
+    def generateRefToCircle(name):
+        return "{}.center()".format(name)
+
+    @staticmethod
+    def generateRefToArc(name):
+        return "{}.center()".format(name)
+
+    @staticmethod
     def generateRefToGeometry(elt, name):
+        logger.info(f'generateRefToGeometry().............')
         if isinstance(elt,Primitive):
+            # if '.' in ref:
+            #     print("======== subref =========")
+            #     i, subref = ref.split('.')
+            #     assert i.isdigit()
+            #     assert subref.isalpha()
+            #     print(ref, subref)
+            #     return _CONV_SUBREF_SELON_TYPE.get(entites[i].type)(i, subref)
+            # else:
+            #     print("========= ref ==========")
+            #     print(ref)
+            #     assert ref.isdigit()
+            #     return _CONV_REF_SELON_TYPE.get(entites[ref].type)(ref)
+            print()
+            logger.info(f'elt: {elt}')
+            logger.info(f'elt.type : {elt.type}')
+            logger.info(f'\n')
             if elt.type == PrimitiveType.POINT:
                 return ShaperGeometryGeneration().generateRefToPoint(name)
             elif elt.type == PrimitiveType.LINE:
                 return ShaperGeometryGeneration().generateRefToLine(name)
+            elif elt.type == PrimitiveType.CIRCLE:
+                return ShaperGeometryGeneration().generateRefToCircle(name)
+            elif elt.type == PrimitiveType.ARC:
+                return ShaperGeometryGeneration().generateRefToArc(name)
             else:
                 return None
         else:
             return None
 
-    #=================================================================================================================
-    # generation of constraints :
-    #=================================================================================================================
+#=================================================================================================================
+# generation of constraints :
+#=================================================================================================================
     @staticmethod
     def generateHorizontal(elt):
         shaperCode = "# Error in contrainst horizontal("+str(elt.references)+").\n"
@@ -213,10 +244,21 @@ if salome.sg.hasDesktop():
                 shaperCode = "Sketch_1.setParallel({}, {})\n".format(function_name_1, function_name_2)
         return shaperCode
 
-# def conv_parallele(entites, contrainte):
-#     ref0 = conv_ref(entites, contrainte.get_references()[0])
-#     ref1 = conv_ref(entites, contrainte.get_references()[1])
-#     return "Sketch_1.setParallel({}, {})\n".format(ref0, ref1)
+    @staticmethod
+    def generateCoincident(elt):
+        logger.info(f'\n\ngenerateCoincident()...............')
+        shaperCode = "# Error in contrainst coincident("+str(elt.references)+").\n"
+        if len(elt.references)==2:
+            ref0 = elt.references[0]
+            logger.info(f'ref0 = {ref0}\n')
+            logger.info(f'ref0.type, get_name(), get_type() = {ref0.type}, {ref0.get_name}')
+            # , {ref0.get_type()}\n')
+            name = elt.references[0].function_name
+            function_name_1 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[0], name)
+            name = elt.references[1].function_name
+            function_name_2 = ShaperGeometryGeneration().generateRefToGeometry(elt.references[1], name)
+            shaperCode = "Sketch_1.setCoincident({}, {})\n".format(function_name_1, function_name_2)
+        return shaperCode
 
 
 #============================================================================================================
