@@ -9,7 +9,16 @@ class Coincident(Constraint):
     def __repr__(self):
         elt1 = self.references[0]
         elt2 = self.references[1]
-        return f"{self.get_name()}: ref_1: {elt1}, {elt1.parent} -- ref_2: {elt2}, {elt2.parent}"
+        if hasattr(elt1, 'parent'):
+            rep = f"{self.get_name()}: ref_1: {elt1}, {elt1.parent}"
+        else :
+            rep = f"{self.get_name()}: ref_1: {elt1}"
+        if hasattr(elt1, 'parent'):
+            rep += f"-- {self.get_name()}: ref_2: {elt2}, {elt2.parent}"
+        else :
+            rep += f"-- {self.get_name()}: ref_2: {elt2}"
+
+        return rep
 
 class Equal(Constraint):
     """Equal Constraint (same length for lines or same radius for circles or arcs"""
