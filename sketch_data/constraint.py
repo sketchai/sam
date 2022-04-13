@@ -11,23 +11,26 @@ class ConstraintType(enum.IntEnum):
     LENGTH = 3
     COINCIDENT = 4
     PERPENDICULAR = 5
-    # DIAMETER = 6
     DISTANCE = 7
     RADIUS = 8
-
+    TANGENT = 9
+    MIDPOINT = 10
+    EQUAL = 11
+    ANGLE = 12
+    HORIZONTAL_LENGTH = 13
+    VERTICAL_LENGTH = 14
     # PROJECTED = 1
     # MIRROR = 2
     # 
-    TANGENT = 9 # changed from 7 which was equal to distance
+
     # 
-    MIDPOINT = 10
-    EQUAL = 11
+
     # 
     # OFFSET = 13
 
     # CONCENTRIC = 15
     # FIX = 16
-    ANGLE = 17
+
     # CIRCULAR_PATTERN = 18
     # PIERCE = 19
     # LINEAR_PATTERN = 20

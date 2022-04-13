@@ -27,7 +27,7 @@ class Point(Primitive):
         self.parent = parent
 
     def get_point(self):
-        return [self.x, self.y]
+        return [self.x , self.y ]
 
     def point_belongs_to_primitive(self, point: List, threshold: float = 0.00001) -> bool:
         """Check if a point belongs to the point"""

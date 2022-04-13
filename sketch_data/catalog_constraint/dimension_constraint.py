@@ -33,6 +33,26 @@ class Length(Constraint):
         elt = self.references[0]
         return f"{self.get_name()}: ref= {elt}, length = {self.length}"
 
+class HorizontalLength(Constraint):
+
+    def __init__(self, references: List = [], length: float = None):
+        super(HorizontalLength, self).__init__(elt_type=ConstraintType.HORIZONTAL_LENGTH, references=references)
+        self.length = length
+
+    def __repr__(self):
+        elt = self.references[0]
+        return f"{self.get_name()}: ref= {elt}, length = {self.length}"
+
+class VerticalLength(Constraint):
+
+    def __init__(self, references: List = [], length: float = None):
+        super(VerticalLength, self).__init__(elt_type=ConstraintType.VERTICAL_LENGTH, references=references)
+        self.length = length
+
+    def __repr__(self):
+        elt = self.references[0]
+        return f"{self.get_name()}: ref= {elt}, length = {self.length}"
+
 class Radius(Constraint):
 
     def __init__(self, references: List = [], radius: float = None):

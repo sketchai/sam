@@ -2,6 +2,10 @@ from typing import Dict, List
 from sketch_data.primitive import Primitive, PrimitiveType
 from .point import Point
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
+
 class Line(Primitive):
     """Line Primitive."""
 
@@ -27,4 +31,6 @@ class Line(Primitive):
 
 
     def plot(self, ax, color='black', linewidth=1):
-        ax.plot(self.pnt1.get_point(), self.pnt2.get_point(), color, linestyle=self._get_linestyle(), linewidth=linewidth)
+        ax.scatter(self.pnt1.x, self.pnt1.y, c='red', marker='.')
+        ax.scatter(self.pnt2.x, self.pnt2.y, c='blue', marker='.')
+        ax.plot([self.pnt1.x, self.pnt2.x], [self.pnt1.y, self.pnt2.y], color, linestyle=self._get_linestyle(), linewidth=linewidth)
