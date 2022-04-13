@@ -13,20 +13,27 @@ class Point(Primitive):
     def __repr__(self):
         return f"Point P({self.x}, {self.y})"
 
+    def _update_x(self,x : float):
+        self.x = x 
+
+    def _update_y(self,y : float):
+        self.y = y 
+
+    def _construct_mapp(self) -> None:
+        """Construct a mapp to update parameters"""
+        return  {'x' :  lambda x: self._update_x(x),  'y' : lambda y:self._update_y(y)}
+
+    def add_parent(self,parent:object) -> None:
+        self.parent = parent
+
     def get_point(self):
         return [self.x, self.y]
-        
+
     def point_belongs_to_primitive(self, point: List, threshold: float = 0.00001) -> bool:
         """Check if a point belongs to the point"""
         return np.linalg.norm(np.array([self.x, self.y]), point) < self.threshold
 
-    def update_parms(self, parms: Dict) -> object:
-        """Update the current parameters"""
-        pass
 
-        # for new_p, parms in zip(l_parms, l_new_parms):
-        #     if
-        #     self.is_construction = parms.get('construction', None)
 
     def plot(self, ax, color='black'):
         ax.scatter(self.x, self.y, c=color, marker='.')

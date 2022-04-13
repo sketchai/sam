@@ -16,18 +16,21 @@ class Circle(Primitive):
     def __repr__(self):
         return f"Circle: center={self.center}, radius=  {self.radius}"
 
+    def _update_radius(self, radius: float):
+        self.radius = radius
+    
+    def _update_center(self, center: List):
+        self.center.update_parms({'x' : center[0], 'y': center[1]})
+
+    def _construct_mapp(self) -> None:
+        """Construct a mapp to update parameters"""
+        return  {'center' : lambda center: self._update_center(center),  
+                 'radius' :  lambda radius: self._update_radius(radius)}
+
+
     def point_belongs_to_primitive(self, point: object) -> bool:
         """Check if a point belongs to the line"""
 
-    def update_parms(self, parms: Dict) -> object:
-        """Update the current parameters"""
-        l_parms = [self.is_construction, self.pnt1_X, self.pnt1_Y, self.pnt2_X, self.pnt2_Y]
-        l_new_parms = ['construction', 'pnt1_X', 'pnt1_Y', 'pnt2_X', 'pnt2_Y']
-        pass
-
-        # for new_p, parms in zip(l_parms, l_new_parms):
-        #     if
-        #     self.is_construction = parms.get('construction', None)
 
     def plot(self, ax, color='black', linewidth=1):
         patch = patches.Circle(self.center.get_point(), self.radius, fill=False, linestyle=self._get_linestyle(), color=color)

@@ -43,12 +43,19 @@ class Primitive(abc.ABC):
         return self.type
 
     @abc.abstractmethod
-    def update_parms(self, parms: Dict) -> object:
-        """Update the current parameters"""
+    def _construct_mapp(self) -> object:
+        """Construct a mapp to update parameters"""
 
     @abc.abstractmethod
     def point_belongs_to_primitive(self, point: object) -> object:
         """Construct from a shaper object"""
+
+    def update_parms(self, parms: Dict) -> None:
+        """Update the current parameters"""
+        mapp = self._construct_mapp()
+
+        for key, elt in parms.items():
+            mapp[key](elt)
 
     # @abc.abstractmethod
     # def to_dict(self) -> dict:
