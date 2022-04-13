@@ -13,5 +13,5 @@ class TestCircle(unittest.TestCase):
 
         # construction
         circle = Circle(status_construction=False, center=[0., 5.], radius=1)
-        self.assertEqual('Circle: Center O(0.0, 5.0), radius=  1', str(circle))
+        self.assertEqual('Circle: center=Point P(0.0, 5.0), radius=  1', str(circle))
         logger.debug(f'circle: {circle}')

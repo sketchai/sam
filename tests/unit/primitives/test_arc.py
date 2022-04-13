@@ -13,5 +13,5 @@ class TestCircle(unittest.TestCase):
 
         # construction
         arc = Arc(status_construction=False, center=[0., 5.], radius=1, angles=[90., 180.])
-        self.assertEqual('Arc Center(0.0, 5.0),  radius= 1, start angle= 90.0, end angle= 180.0', str(arc))
+        self.assertEqual('Arc center=Point P(0.0, 5.0),  radius= 1, start angle= 90.0, end angle= 180.0', str(arc))
         logger.debug(f'arc: {arc}')

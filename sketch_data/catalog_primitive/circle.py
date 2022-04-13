@@ -1,5 +1,6 @@
 from typing import List, Dict
 from sketch_data.primitive import Primitive, PrimitiveType
+from .point import Point
 
 from matplotlib import patches
 
@@ -9,12 +10,11 @@ class Circle(Primitive):
 
     def __init__(self, status_construction: bool = False, center: List = [], radius: float = 0.):
         super(Circle, self).__init__(elt_type=PrimitiveType.CIRCLE, status_construction=status_construction)
-        self.x_center: float = center[0]
-        self.y_center: float = center[1]
+        self.center: Point = Point(point = center, status_construction=status_construction)
         self.radius: float = radius
 
     def __repr__(self):
-        return f"Circle: Center O({self.x_center}, {self.y_center}), radius=  {self.radius}"
+        return f"Circle: center={self.center}, radius=  {self.radius}"
 
     def point_belongs_to_primitive(self, point: object) -> bool:
         """Check if a point belongs to the line"""
@@ -30,5 +30,5 @@ class Circle(Primitive):
         #     self.is_construction = parms.get('construction', None)
 
     def plot(self, ax, color='black', linewidth=1):
-        patch = patches.Circle((self.x_center, self.y_center), self.radius, fill=False, linestyle=self._get_linestyle(), color=color)
+        patch = patches.Circle(self.center.get_point(), self.radius, fill=False, linestyle=self._get_linestyle(), color=color)
         ax.add_patch(patch)

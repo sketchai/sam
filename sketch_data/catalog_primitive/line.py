@@ -27,4 +27,4 @@ class Line(Primitive):
         #     self.is_construction = parms.get('construction', None)
 
     def plot(self, ax, color='black', linewidth=1):
-        ax.plot((self.pnt1_X, self.pnt1_Y), (self.pnt2_X, self.pnt2_Y), color, linestyle=self._get_linestyle(), linewidth=linewidth)
+        ax.plot(self.pnt1.get_point(), self.pnt2.get_point(), color, linestyle=self._get_linestyle(), linewidth=linewidth)
