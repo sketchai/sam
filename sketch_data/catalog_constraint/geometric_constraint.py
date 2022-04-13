@@ -6,6 +6,11 @@ class Coincident(Constraint):
     def __init__(self, references: List = []):
         super(Coincident, self).__init__(elt_type=ConstraintType.COINCIDENT, references=references)
 
+    def __repr__(self):
+        elt1 = self.references[0]
+        elt2 = self.references[1]
+        return f"{self.get_name()}: ref_1: {elt1}, {elt1.parent} -- ref_2: {elt2}, {elt2.parent}"
+
 class Equal(Constraint):
     """Equal Constraint (same length for lines or same radius for circles or arcs"""
 

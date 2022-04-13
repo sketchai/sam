@@ -40,8 +40,6 @@ class ConstraintType(enum.IntEnum):
     # MAJOR_DIAM = 27
     # RHO = 28
 
-
-
 class Constraint(abc.ABC):
     """Abstract class representing a geometry entity.
 

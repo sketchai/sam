@@ -46,8 +46,8 @@ class TestConstraintGlobal(unittest.TestCase):
         # construction
         line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
         line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        coincident = Coincident(references=[line_1, line_1.pnt1, line_2, line_2.pnt2])
-        expected_output = 'COINCIDENT: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Point P(0.2, 0.2), ref_3: Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7), ref_4: Point P(0.3, 0.7)'
+        coincident = Coincident(references=[line_1.pnt1, line_2.pnt2])
+        expected_output = 'COINCIDENT: ref_1: Point P(0.2, 0.2), Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7) -- ref_2: Point P(0.3, 0.7), Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7)'
         self.assertEqual(expected_output, str(coincident))
         logger.debug(f'constraint: {coincident}')
 
