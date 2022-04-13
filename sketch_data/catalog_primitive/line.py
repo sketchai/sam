@@ -1,14 +1,14 @@
-from typing import Dict
+from typing import Dict, List
 from sketch_data.primitive import Primitive, PrimitiveType
 from .point import Point
 
 class Line(Primitive):
     """Line Primitive."""
 
-    def __init__(self, status_construction: bool = False, pnt1_X: float = 0, pnt1_Y: float = 0, pnt2_X: float = 1, pnt2_Y: float = 0):
+    def __init__(self, status_construction: bool = False, pnt1: List = [], pnt2: List = []):
         super(Line, self).__init__(elt_type=PrimitiveType.LINE, status_construction=status_construction)
-        self.pnt1: Point=Point(point=[pnt1_X, pnt1_Y])
-        self.pnt2: Point=Point(point=[pnt2_X, pnt2_Y])
+        self.pnt1: Point=Point(point=pnt1)
+        self.pnt2: Point=Point(point=pnt2)
 
         # add lineage
         self.pnt1.add_parent(self)

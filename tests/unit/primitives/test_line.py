@@ -12,12 +12,12 @@ class TestPrimitive(unittest.TestCase):
     def test_construction(self):
 
         # construction
-        line = Line(status_construction=False, pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(status_construction=False, pnt1 = [0.2,0.2], pnt2= [0.3, 0.7])
         self.assertEqual('Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7)', str(line))
         logger.debug(f'line: {line}')
 
     def test_update_parms(self):
-        line = Line(status_construction=False, pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(status_construction=False, pnt1 = [0.2,0.2], pnt2= [0.3, 0.7])
         self.assertEqual('Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7)', str(line))
         line.update_parms({'pnt1_X' : 0.3, 'pnt1_Y' : 0.4, 'pnt2_X' : 0.1, 'pnt2_Y': 0.8}) 
         self.assertEqual('Line p1=Point P(0.3, 0.4), p2=Point P(0.1, 0.8)', str(line)) 
@@ -26,7 +26,7 @@ class TestPrimitive(unittest.TestCase):
     def test_lineage(self):
 
         # Test 1: test that the three objects have the same references
-        line = Line(status_construction=False, pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(status_construction=False, pnt1 = [0.2,0.2], pnt2= [0.3, 0.7])
         self.assertTrue(line is line.pnt1.parent)
         self.assertTrue(line is line.pnt2.parent)
         self.assertTrue(line.pnt1.parent is line.pnt2.parent)
