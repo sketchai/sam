@@ -13,6 +13,9 @@ class Circle(Primitive):
         self.center: Point = Point(point = center, status_construction=status_construction)
         self.radius: float = radius
 
+        # add lineage
+        self.center.add_parent(self)
+
     def __repr__(self):
         return f"Circle: center={self.center}, radius=  {self.radius}"
 

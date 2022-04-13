@@ -18,9 +18,7 @@ class Arc(Circle):
     def __init__(self, status_construction: bool = False, center: List = [], radius: float = 0., angles: List = []):
         super().__init__(status_construction=status_construction, center = center, radius = radius)
         self.type = PrimitiveType.ARC
-        self.center: Point = Point(point = center, status_construction=status_construction)
-
-        self.radius: float = radius
+        
         self.angle_start: float = angles[0]  # in degrees
         self.angle_end: float = angles[1]  # in degrees
 
