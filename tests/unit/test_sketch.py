@@ -19,15 +19,15 @@ class TestSketch(unittest.TestCase):
         sketch.add(Circle(center=[0., 5.], radius=1))
         sketch.add(Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7))
 
-    # def test_show(self):
-    #     sketch = Sketch()
+    def test_show(self):
+        sketch = Sketch()
 
-    #     sketch.add(Circle(center=[0.,5.], radius=1))
-    #     sketch.add(Arc(center=[0.,5.], radius=1, angles = [90.,180.]))
-    #     sketch.add(Line(pnt1_X =0.2, pnt1_Y = 0.2, pnt2_X = 0.3, pnt2_Y=0.7))
+        sketch.add(Circle(center=[0.,5.], radius=1))
+        sketch.add(Arc(center=[0.,5.], radius=1, angles = [90.,180.]))
+        sketch.add(Line(pnt1_X =0.2, pnt1_Y = 0.2, pnt2_X = 0.3, pnt2_Y=0.7))
 
-    #     fig = sketch.draw()
-    #     plt.show()
+        fig = sketch.draw()
+        plt.show()
 
     def test_export(self):
         sketch = Sketch()
