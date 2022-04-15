@@ -4,6 +4,7 @@ from .point import Point
 from .circle import Circle
 
 from matplotlib import patches
+import numpy as np
 
 import logging
 
@@ -25,6 +26,12 @@ class Arc(Circle):
     def __repr__(self):
         return f"Arc center={self.center},  radius= {self.radius}, start angle= {self.angle_start}, end angle= {self.angle_end}"
 
+    def add_points_startend(self):
+        angle_start = np.deg2rad(self.angle_start)
+        angle_end = np.deg2rad(self.angle_end)
+        self.pnt1 = Point(point = [self.center.x + self.radius*np.cos(angle_start ), self.center.x + self.radius*np.sin(angle_start )]) 
+        self.pnt2 = Point(point = [self.center.x + self.radius*np.cos(angle_end), self.center.x + self.radius*np.sin(angle_end)]) 
+        
     def _update_angle_start(self,angle: float):
         self.angle_start = angle
     
