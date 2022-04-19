@@ -54,19 +54,25 @@ class Constraint(abc.ABC):
         self.type: str = elt_type
         self.references: str = references
 
-    def get_name(self) -> int:
-        return self.type.name
-
-
-    def get_type(self) -> int:
-        return self.type
-
-    # @abc.abstractmethod
-    def update_parms(self, parms: Dict) -> object:
-        """Update the current parameters"""
-        pass
-
     def __repr__(self):
         l_ref = [f'ref_{i+1}: {ref}' for i, ref in enumerate(self.references)]
         refs = ', '.join(l_ref)
         return f"{self.get_name()}: {refs}"
+
+    def get_name(self) -> int:
+        return self.type.name
+
+    def get_type(self) -> int:
+        return self.type
+
+    def _construct_mapp(self) -> object:
+        """Construct a mapp to update parameters"""
+        pass
+
+    def update_parms(self, parms: Dict) -> None:
+        """Update the current parameters"""
+        mapp = self._construct_mapp()
+
+        for key, elt in parms.items():
+            mapp[key](elt)
+

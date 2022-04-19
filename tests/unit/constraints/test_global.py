@@ -16,7 +16,7 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_horizontal(self):
 
         # construction
-        line = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
         horizontal = Horizontal(references=[line])
         expected_output = 'HORIZONTAL: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7)'
         self.assertEqual(expected_output, str(horizontal))
@@ -25,7 +25,7 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_vertical(self):
 
         # construction
-        line = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
         vertical = Vertical(references=[line])
         expected_output = 'VERTICAL: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7)'
         self.assertEqual(expected_output, str(vertical))
@@ -34,8 +34,8 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_parallel(self):
 
         # construction
-        line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.3, 0.7])
         parallel = Parallel(references=[line_1, line_2])
         expected_output = 'PARALLEL: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7)'
         self.assertEqual(expected_output, str(parallel))
@@ -44,18 +44,18 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_coincident(self):
 
         # construction
-        line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.3, 0.7])
         coincident = Coincident(references=[line_1.pnt1, line_2.pnt2])
-        expected_output = 'COINCIDENT: ref_1: Point P(0.2, 0.2), Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7) -- ref_2: Point P(0.3, 0.7), Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7)'
+        expected_output = 'COINCIDENT: ref_1: Point P(0.2, 0.2), Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7)-- COINCIDENT: ref_2: Point P(0.3, 0.7), Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7)'
         self.assertEqual(expected_output, str(coincident))
         logger.debug(f'constraint: {coincident}')
 
     def test_equal(self):
 
         # same lengths for 2 lines :
-        line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.1, pnt2_Y=0.5)
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.1, 0.5])
         constraint = Equal(references=[line_1, line_2])
         expected_output = 'EQUAL: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Line p1=Point P(0.0, 0.2), p2=Point P(0.1, 0.5)'
         self.assertEqual(expected_output, str(constraint))
@@ -72,7 +72,7 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_midpoint(self):
 
         # construction
-        line = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
         point = Point(status_construction=False, point=[0., 8.])
         constraint = Midpoint(references=[line, point])
         expected_output = 'MIDPOINT: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Point P(0.0, 8.0)'
@@ -82,8 +82,8 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_perpendicular(self):
 
         # construction
-        line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.3, 0.7])
         constraint = Perpendicular(references=[line_1, line_2])
         expected_output = 'PERPENDICULAR: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7)'
         self.assertEqual(expected_output, str(constraint))
@@ -92,7 +92,7 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_tangent(self):
 
         # tangence line-circle :
-        line = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
         circle = Circle(status_construction=False, center=[0., 5.], radius=1)
         constraint = Tangent(references=[line, circle])
         expected_output = 'TANGENT: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Circle: center=Point P(0.0, 5.0), radius=  1'
@@ -100,7 +100,7 @@ class TestConstraintGlobal(unittest.TestCase):
         logger.debug(f'constraint: {constraint}')
 
         # tangence line-arc :
-        line = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
         arc = Arc(status_construction=False, center=[0., 5.], radius=1, angles=[90., 180.])
         constraint = Tangent(references=[line, arc])
         expected_output = 'TANGENT: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Arc center=Point P(0.0, 5.0),  radius= 1, start angle= 90.0, end angle= 180.0'
@@ -113,8 +113,8 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_angle(self):
 
         # angle constraint between 2 lines :
-        line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.3, 0.7])
         constraint = Angle(references=[line_1, line_2], angle = 45.)
         expected_output = 'ANGLE: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7), angle = 45.0'
         self.assertEqual(expected_output, str(constraint))
@@ -123,7 +123,7 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_length(self):
 
         # construction
-        line = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
         length = Length(references=[line], length=2.)
         expected_output = 'LENGTH: ref= Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), length = 2.0'
         self.assertEqual(expected_output, str(length))
@@ -132,15 +132,15 @@ class TestConstraintGlobal(unittest.TestCase):
     def test_distance(self):
 
         # distance entre 2 segments (line) :
-        line_1 = Line(pnt1_X=0.2, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
-        line_2 = Line(pnt1_X=0.0, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.3, 0.7])
         constraint = Distance(references=[line_1, line_2], distance_min=5)
         expected_output = 'DISTANCE: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7), distance_min = 5'
         self.assertEqual(expected_output, str(constraint))
         logger.debug(f'constraint: {constraint}')
 
         # distance entre un segment (line) et un point :
-        line = Line(pnt1_X=0.1, pnt1_Y=0.2, pnt2_X=0.3, pnt2_Y=0.7)
+        line = Line(pnt1= [0.1,0.2], pnt2 = [0.3, 0.7])
         point = Point(status_construction=False, point=[0., 8.])
         constraint = Distance(references=[line, point], distance_min=5)
         expected_output = 'DISTANCE: ref_1: Line p1=Point P(0.1, 0.2), p2=Point P(0.3, 0.7), ref_2: Point P(0.0, 8.0), distance_min = 5'

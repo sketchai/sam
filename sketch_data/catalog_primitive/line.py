@@ -26,8 +26,8 @@ class Line(Primitive):
 
     def _construct_mapp(self) -> None:
         """Construct a mapp to update parameters"""
-        return  {   'pnt1_X' : lambda x: self.pnt1._update_x(x),  'pnt1_Y' :  lambda y: self.pnt1._update_y(y),
-                    'pnt2_X' : lambda x: self.pnt2._update_x(x), 'pnt2_Y': lambda y: self.pnt2._update_y(y)}
+        return  {   'pnt1' : lambda x: self.pnt1.update_parms({'x' : x[0], 'y': x[1]}), 
+                    'pnt2' : lambda x: self.pnt2.update_parms({'x' : x[0], 'y': x[1]})}
 
 
     def plot(self, ax, color='black', linewidth=1):

@@ -42,18 +42,20 @@ class Primitive(abc.ABC):
     def get_type(self) -> int:
         return self.type
 
-    @abc.abstractmethod
+
     def _construct_mapp(self) -> object:
         """Construct a mapp to update parameters"""
+        pass
 
-    @abc.abstractmethod
     def point_belongs_to_primitive(self, point: object) -> object:
         """Construct from a shaper object"""
+        pass
 
     def update_parms(self, parms: Dict) -> None:
         """Update the current parameters"""
         mapp = self._construct_mapp()
 
+        
         for key, elt in parms.items():
             mapp[key](elt)
 

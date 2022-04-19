@@ -19,7 +19,7 @@ class TestPrimitive(unittest.TestCase):
     def test_update_parms(self):
         line = Line(status_construction=False, pnt1 = [0.2,0.2], pnt2= [0.3, 0.7])
         self.assertEqual('Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7)', str(line))
-        line.update_parms({'pnt1_X' : 0.3, 'pnt1_Y' : 0.4, 'pnt2_X' : 0.1, 'pnt2_Y': 0.8}) 
+        line.update_parms({'pnt1' : [0.3, 0.4], 'pnt2' : [0.1,0.8]}) 
         self.assertEqual('Line p1=Point P(0.3, 0.4), p2=Point P(0.1, 0.8)', str(line)) 
 
 
@@ -34,7 +34,7 @@ class TestPrimitive(unittest.TestCase):
         logger.debug(f'line: {line}')
 
         # Test 2: test that when line is modify, parents are modify
-        line.update_parms({'pnt1_X' : 0.3, 'pnt1_Y' : 0.4, 'pnt2_X' : 0.1, 'pnt2_Y': 0.8}) 
+        line.update_parms({'pnt1' : [0.3, 0.4], 'pnt2' : [0.1,0.8]}) 
         self.assertEqual('Line p1=Point P(0.3, 0.4), p2=Point P(0.1, 0.8)', str(line))
         self.assertEqual('Line p1=Point P(0.3, 0.4), p2=Point P(0.1, 0.8)', str(line.pnt1.parent))  
         self.assertEqual('Line p1=Point P(0.3, 0.4), p2=Point P(0.1, 0.8)', str(line.pnt2.parent))  
