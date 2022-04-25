@@ -43,6 +43,9 @@ class Arc(Circle):
         mapp = super()._construct_mapp()
         mapp['angle_start'] = lambda angle : self._update_angle_start(angle)
         mapp['angle_end'] = lambda angle : self._update_angle_end(angle)
+        if hasattr(self,'pnt1'):
+            mapp['pnt1'] = lambda x: self.pnt1.update_parms({'x' : x[0], 'y': x[1]})
+            mapp['pnt2'] = lambda x: self.pnt2.update_parms({'x' : x[0], 'y': x[1]})
         return  mapp
 
     def point_belongs_to_primitive(self, point: object) -> bool:

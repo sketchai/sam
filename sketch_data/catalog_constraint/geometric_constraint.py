@@ -13,7 +13,7 @@ class Coincident(Constraint):
             rep = f"{self.get_name()}: ref_1: {elt1}, {elt1.parent}"
         else :
             rep = f"{self.get_name()}: ref_1: {elt1}"
-        if hasattr(elt1, 'parent'):
+        if hasattr(elt2, 'parent'):
             rep += f"-- {self.get_name()}: ref_2: {elt2}, {elt2.parent}"
         else :
             rep += f"-- {self.get_name()}: ref_2: {elt2}"
