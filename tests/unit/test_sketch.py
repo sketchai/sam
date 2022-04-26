@@ -16,7 +16,7 @@ class TestSketch(unittest.TestCase):
         # construction
         sketch = Sketch()
 
-        sketch.add(Circle(center=[0., 5.], radius=1))
+        sketch.add(Circle(center=[10., 5.], radius=1))
         sketch.add(Line(pnt1 = [0.2, 0.2], pnt2 = [0.3, 0.7]))
 
     # def test_show(self):

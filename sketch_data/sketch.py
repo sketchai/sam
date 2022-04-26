@@ -49,6 +49,7 @@ class Sketch:
                     continue
 
         # Rescale axis limits
+        ax.grid(True)
         ax.relim()
         ax.autoscale_view()
 
