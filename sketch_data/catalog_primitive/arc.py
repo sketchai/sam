@@ -1,7 +1,6 @@
 from typing import List, Dict
-from sketch_data.primitive import PrimitiveType
+from sketch_data.primitive import Primitive, PrimitiveType
 from .point import Point
-from .circle import Circle
 
 from matplotlib import patches
 import numpy as np
@@ -13,15 +12,18 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class Arc(Circle):
+class Arc(Primitive):
     """Arc Primitive."""
 
     def __init__(self, status_construction: bool = False, center: List = [], radius: float = 0., angles: List = []):
-        super().__init__(status_construction=status_construction, center = center, radius = radius)
-        self.type = PrimitiveType.ARC
-        
+        super().__init__(elt_type=PrimitiveType.ARC, status_construction=status_construction)
+        self.center: Point = Point(point = center, status_construction=status_construction)
+        self.radius: float = radius
         self.angle_start: float = angles[0]  # in degrees
         self.angle_end: float = angles[1]  # in degrees
+
+        # add lineage
+        self.center.add_parent(self)
 
     def __repr__(self):
         return f"Arc center={self.center},  radius= {self.radius}, start angle= {self.angle_start}, end angle= {self.angle_end}"
@@ -29,8 +31,8 @@ class Arc(Circle):
     def add_points_startend(self):
         angle_start = np.deg2rad(self.angle_start)
         angle_end = np.deg2rad(self.angle_end)
-        self.pnt1 = Point(point = [self.center.x + self.radius*np.cos(angle_start ), self.center.x + self.radius*np.sin(angle_start )]) 
-        self.pnt2 = Point(point = [self.center.x + self.radius*np.cos(angle_end), self.center.x + self.radius*np.sin(angle_end)]) 
+        self.pnt1 = Point(point = [self.center.x + self.radius*np.cos(angle_start ), self.center.y + self.radius*np.sin(angle_start )]) 
+        self.pnt2 = Point(point = [self.center.x + self.radius*np.cos(angle_end), self.center.y + self.radius*np.sin(angle_end)]) 
         
     def _update_angle_start(self,angle: float):
         self.angle_start = angle
@@ -38,11 +40,22 @@ class Arc(Circle):
     def _update_angle_end(self, angle: float):
         self.angle_end = angle
 
+    def _update_radius(self, radius: float):
+        self.radius = radius
+    
+    def _update_center(self, center: List):
+        self.center.update_parms({'x' : center[0], 'y': center[1]})
+
     def _construct_mapp(self) -> None:
         """Construct a mapp to update parameters"""
-        mapp = super()._construct_mapp()
-        mapp['angle_start'] = lambda angle : self._update_angle_start(angle)
-        mapp['angle_end'] = lambda angle : self._update_angle_end(angle)
+
+    def _construct_mapp(self) -> None:
+        """Construct a mapp to update parameters"""
+        mapp = {
+            'center': lambda center: self._update_center(center),  
+            'radius':  lambda radius: self._update_radius(radius),
+            'angle_start': lambda angle : self._update_angle_start(angle),
+            'angle_end': lambda angle : self._update_angle_end(angle),}
         if hasattr(self,'pnt1'):
             mapp['pnt1'] = lambda x: self.pnt1.update_parms({'x' : x[0], 'y': x[1]})
             mapp['pnt2'] = lambda x: self.pnt2.update_parms({'x' : x[0], 'y': x[1]})
