@@ -1,4 +1,4 @@
-# Sketch_data
+# SAM: Sketch dAta Model
 
 ## Installation
 
