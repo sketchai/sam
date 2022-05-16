@@ -6,6 +6,7 @@
 We use conda as an environment manager and poetry as dependency manager.
 
 1. Generate a conda env 
+
 First, create and activate a basic conda env from the [env_prep.yml](./env/env.yml) file. 
 
 Run 
