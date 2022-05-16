@@ -1,4 +1,4 @@
-from sketch_data.catalog_primitive.circle import Circle
+from sam.catalog_primitive.circle import Circle
 import unittest
 import logging
 

@@ -1,4 +1,4 @@
-from sketch_data.catalog_primitive.point import Point
+from sam.catalog_primitive.point import Point
 import unittest
 import logging
 

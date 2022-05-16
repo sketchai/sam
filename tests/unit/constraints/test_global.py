@@ -1,7 +1,7 @@
-from sketch_data.catalog_constraint.dimension_constraint import * #Distance, Radius
-from sketch_data.catalog_constraint.geometric_constraint import *
-from sketch_data.catalog_primitive import Point, Line, Arc, Circle
-from sketch_data.catalog_constraint import *
+from sam.catalog_constraint.dimension_constraint import * #Distance, Radius
+from sam.catalog_constraint.geometric_constraint import *
+from sam.catalog_primitive import Point, Line, Arc, Circle
+from sam.catalog_constraint import *
 import unittest
 import logging
 
@@ -152,14 +152,14 @@ class TestConstraintGlobal(unittest.TestCase):
         # test de contrainte rayon sur un cercle :
         circle = Circle(status_construction=False, center=[0., 5.], radius=1)
         constraint = Radius(references=[circle], radius=2.)
-        expected_output = 'RADIUS: ref= Circle: center=Point P(0.0, 5.0), radius=  1, radius_constraint = 2.0'
+        expected_output = 'RADIUS: ref= Circle: center=Point P(0.0, 5.0), radius=  1, radius = 2.0'
         self.assertEqual(expected_output, str(constraint))
         logger.debug(f'constraint: {constraint}')
 
         # test de contrainte rayon sur un arc de cercle :
         arc = Arc(status_construction=False, center=[0., 5.], radius=1, angles=[90., 180.])
         constraint = Radius(references=[arc], radius=2.)
-        expected_output = 'RADIUS: ref= Arc center=Point P(0.0, 5.0),  radius= 1, start angle= 90.0, end angle= 180.0, radius_constraint = 2.0'
+        expected_output = 'RADIUS: ref= Arc center=Point P(0.0, 5.0),  radius= 1, start angle= 90.0, end angle= 180.0, radius = 2.0'
         self.assertEqual(expected_output, str(constraint))
         logger.debug(f'constraint: {constraint}')
 

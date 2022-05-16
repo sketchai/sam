@@ -1,4 +1,4 @@
-from sketch_data.catalog_primitive.line import Line
+from sam.catalog_primitive.line import Line
 import unittest
 import logging
 

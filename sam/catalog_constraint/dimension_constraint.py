@@ -1,5 +1,5 @@
 from typing import Dict, List
-from sketch_data.constraint import Constraint, ConstraintType
+from sam.constraint import Constraint, ConstraintType
 
 class Angle(Constraint):
 

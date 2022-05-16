@@ -1,5 +1,5 @@
 from typing import List, Dict
-from sketch_data.primitive import Primitive, PrimitiveType
+from sam.primitive import Primitive, PrimitiveType
 
 
 class Point(Primitive):

@@ -1,5 +1,5 @@
 from typing import Dict, List
-from sketch_data.primitive import Primitive, PrimitiveType
+from sam.primitive import Primitive, PrimitiveType
 from .point import Point
 
 import logging

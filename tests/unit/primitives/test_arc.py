@@ -1,4 +1,4 @@
-from sketch_data.catalog_primitive.arc import Arc
+from sam.catalog_primitive.arc import Arc
 import unittest
 import logging
 

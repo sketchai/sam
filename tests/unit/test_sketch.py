@@ -1,5 +1,5 @@
-from sketch_data.catalog_primitive import Circle, Line, Arc
-from sketch_data.sketch import Sketch
+from sam.catalog_primitive import Circle, Line, Arc
+from sam.sketch import Sketch
 import unittest
 import logging
 import matplotlib.pyplot as plt
@@ -18,6 +18,9 @@ class TestSketch(unittest.TestCase):
 
         sketch.add(Circle(center=[10., 5.], radius=1))
         sketch.add(Line(pnt1 = [0.2, 0.2], pnt2 = [0.3, 0.7]))
+
+        for s in sketch.sequence:
+            logger.info(f'{s}')
 
     # def test_show(self):
     #     sketch = Sketch()

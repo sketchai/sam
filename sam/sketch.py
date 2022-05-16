@@ -2,8 +2,8 @@ from typing import List
 import pickle, sys
 import matplotlib.pyplot as plt
 
-from sketch_data.primitive import Primitive
-from sketch_data.constraint import Constraint
+from sam.primitive import Primitive
+from sam.constraint import Constraint
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
