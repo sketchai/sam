@@ -60,14 +60,16 @@ class Length(Constraint):
 class HorizontalLength(Length):
 
     def __init__(self, references: List = [], length: float = None):
-        super(Length, self).__init__(elt_type=ConstraintType.LENGTH, references=references, length=length)
+        super(Length, self).__init__(elt_type=ConstraintType.LENGTH, references=references)
         self.type = ConstraintType.HORIZONTAL_LENGTH
+        self.length = length
 
 class VerticalLength(Length):
 
     def __init__(self, references: List = [], length: float = None):
-        super(Length, self).__init__(elt_type=ConstraintType.LENGTH, references=references, length=length)
+        super(Length, self).__init__(elt_type=ConstraintType.LENGTH, references=references)
         self.type = ConstraintType.VERTICAL_LENGTH
+        self.length = length
 
 
 class Radius(Constraint):
