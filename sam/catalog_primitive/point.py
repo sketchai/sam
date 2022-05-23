@@ -35,5 +35,5 @@ class Point(Primitive):
 
 
 
-    def plot(self, ax, color='black'):
-        ax.scatter(self.x, self.y, c=color, marker='.')
+    def plot(self, ax, color='black',**kwargs):
+        ax.scatter(self.x, self.y, color=color, marker='.',**kwargs)
