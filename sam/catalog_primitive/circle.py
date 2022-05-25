@@ -36,5 +36,5 @@ class Circle(Primitive):
 
 
     def plot(self, ax, color='black', linewidth=1):
-        patch = patches.Circle(self.center.get_point(), self.radius, fill=False, linestyle=self._get_linestyle(), color=color)
+        patch = patches.Circle(self.center.get_point(), self.radius, fill=False, linestyle=self._get_linestyle(), color=color, linewidth=linewidth)
         ax.add_patch(patch)

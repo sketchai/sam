@@ -15,12 +15,13 @@ logger = logging.getLogger()
 class Arc(Primitive):
     """Arc Primitive."""
 
-    def __init__(self, status_construction: bool = False, center: List = [], radius: float = 0., angles: List = []):
+    def __init__(self, status_construction: bool = False, center: List = [], radius: float = 0., angles: List = [], radian=False):
         super().__init__(elt_type=PrimitiveType.ARC, status_construction=status_construction)
         self.center: Point = Point(point = center, status_construction=status_construction)
         self.radius: float = radius
         self.angle_start: float = angles[0]  # in degrees
         self.angle_end: float = angles[1]  # in degrees
+        self.radian: bool = radian
 
         # add lineage
         self.center.add_parent(self)
@@ -29,10 +30,15 @@ class Arc(Primitive):
         return f"Arc center={self.center},  radius= {self.radius}, start angle= {self.angle_start}, end angle= {self.angle_end}"
 
     def add_points_startend(self):
-        angle_start = np.deg2rad(self.angle_start)
-        angle_end = np.deg2rad(self.angle_end)
+        if not self.radian:
+            angle_start = np.deg2rad(self.angle_start)
+            angle_end = np.deg2rad(self.angle_end)
         self.pnt1 = Point(point = [self.center.x + self.radius*np.cos(angle_start ), self.center.y + self.radius*np.sin(angle_start )]) 
         self.pnt2 = Point(point = [self.center.x + self.radius*np.cos(angle_end), self.center.y + self.radius*np.sin(angle_end)]) 
+
+        # add lineage
+        self.pnt1.add_parent(self)
+        self.pnt2.add_parent(self)
         
     def _update_angle_start(self,angle: float):
         self.angle_start = angle
@@ -68,11 +74,16 @@ class Arc(Primitive):
         #angle = math.atan2(arc.yDir, arc.xDir) * 180 / math.pi
         #startParam = arc.startParam * 180 / math.pi
         #endParam = arc.endParam * 180 / math.pi
-
+        theta1 = self.angle_start
+        theta2 = self.angle_end
+        if self.radian:
+            theta1 = np.rad2deg(theta1)
+            theta2 = np.rad2deg(theta2)
         ax.add_patch(patches.Arc(xy=self.center.get_point(),  # center of the ellipse
                                  # angle=self.angle_start - self.angle_end, # rotation of the ellipse, counterclockwise, in degrees
-                                 theta1=self.angle_start,  # starting angle, in degrees
-                                 theta2=self.angle_end,  # ending angle, in degrees
+                                 theta1=theta1,  # starting angle, in degrees
+                                 theta2=theta2,  # ending angle, in degrees
                                  width=2 * self.radius,  # The length of the horizontal axis.
                                  height=2 * self.radius,  # The length of the vertical axis.
+                                 linewidth=linewidth,
                                  linestyle=self._get_linestyle(), color=color))
