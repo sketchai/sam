@@ -33,7 +33,10 @@ class Arc(Primitive):
         if not self.radian:
             angle_start = np.deg2rad(self.angle_start)
             angle_end = np.deg2rad(self.angle_end)
-        self.pnt1 = Point(point = [self.center.x + self.radius*np.cos(angle_start ), self.center.y + self.radius*np.sin(angle_start )]) 
+        else:
+            angle_start = self.angle_start
+            angle_end = self.angle_end
+        self.pnt1 = Point(point = [self.center.x + self.radius*np.cos(angle_start), self.center.y + self.radius*np.sin(angle_start)]) 
         self.pnt2 = Point(point = [self.center.x + self.radius*np.cos(angle_end), self.center.y + self.radius*np.sin(angle_end)]) 
 
         # add lineage
