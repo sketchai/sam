@@ -39,6 +39,22 @@ class Distance(Constraint):
         mapp = {'distance_min' : lambda x : self._update_distance_min(x)}
         return  mapp
 
+class HorizontalDistance(Distance):
+
+    def __init__(self, references: List = [], distance_min: float = None):
+        super(Distance, self).__init__(elt_type=ConstraintType.DISTANCE, references=references)
+        self.type = ConstraintType.HORIZONTAL_DISTANCE
+        self.distance_min = distance_min
+
+
+class VerticalDistance(Distance):
+
+    def __init__(self, references: List = [], distance_min: float = None):
+        super(Distance, self).__init__(elt_type=ConstraintType.DISTANCE, references=references)
+        self.type = ConstraintType.VERTICAL_DISTANCE
+        self.distance_min = distance_min
+
+
 class Length(Constraint):
 
     def __init__(self, references: List = [], length: float = None):
@@ -57,19 +73,7 @@ class Length(Constraint):
         mapp = {'length' : lambda x : self._update_length(x)}
         return  mapp
 
-class HorizontalLength(Length):
 
-    def __init__(self, references: List = [], length: float = None):
-        super(Length, self).__init__(elt_type=ConstraintType.LENGTH, references=references)
-        self.type = ConstraintType.HORIZONTAL_LENGTH
-        self.length = length
-
-class VerticalLength(Length):
-
-    def __init__(self, references: List = [], length: float = None):
-        super(Length, self).__init__(elt_type=ConstraintType.LENGTH, references=references)
-        self.type = ConstraintType.VERTICAL_LENGTH
-        self.length = length
 
 
 class Radius(Constraint):

@@ -17,8 +17,8 @@ class ConstraintType(enum.IntEnum):
     MIDPOINT = 10
     EQUAL = 11
     ANGLE = 12
-    HORIZONTAL_LENGTH = 13
-    VERTICAL_LENGTH = 14
+    HORIZONTAL_DISTANCE = 13
+    VERTICAL_DISTANCE = 14
     # PROJECTED = 1
     # MIRROR = 2
     # 
