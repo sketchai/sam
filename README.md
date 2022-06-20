@@ -94,7 +94,7 @@ then
 
 
 
-1. Install poetry and package dependencies
+2. Install poetry and package dependencies
 
 To install package dependencies with poetry, 
 
@@ -110,13 +110,13 @@ To update package dependencies,
 
 ## Testing 
 
-For running all the tests:
+To run all the tests:
 
 ```
     poetry run pytest 
 ```
 
-For running a specific test: 
+To run a specific test: 
 ```
     poetry run pytest path/my_test
 ```
