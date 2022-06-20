@@ -62,21 +62,24 @@ Each constraint is a python class inheriting from the abstract class `Constraint
 
 ## Installation (pip)
 
-Clone the repository, ensure your pip version is at least 22.0 and run
+Follow this procedure if you intend to install sam as a dependency for your project.
+
+Clone the repository, ensure your [pip](https://pip.pypa.io/en/stable/getting-started/) version is at least 22.0 and run
 
 ```sh
     cd sam
-    pip install .
+    pip install -e .
 ```
 
 ## Installation (dev)
 
+Follow this procedure if you intend to develop the sam repository itself.
 
 We use conda as an environment manager and poetry as dependency manager.
 
 1. Generate a conda env 
 
-First, create and activate a basic conda env from the [env_prep.yml](./env/env.yml) file. 
+First, create and activate a basic conda env from the [env.yml](./env/env.yml) file. 
 
 Run 
 ```
@@ -91,7 +94,7 @@ then
 
 
 
-2. Install poetry and package dependencies
+1. Install poetry and package dependencies
 
 To install package dependencies with poetry, 
 
