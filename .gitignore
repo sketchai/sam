@@ -9,7 +9,6 @@ poetry.lock
 
 data
 
-tests/asset/out
 
 # Unit test / coverage reports
 .coverage

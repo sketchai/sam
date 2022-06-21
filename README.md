@@ -40,10 +40,10 @@ Each constraint is a python class inheriting from the abstract class `Constraint
 - **length**:
     - length (float)
 
-- **horizontalLength**:
+- **horizontalDistance**:
     - length (float)
 
-- **verticalLength**:
+- **verticalDistance**:
     - length (float)
 
 - **radius**:
@@ -62,21 +62,25 @@ Each constraint is a python class inheriting from the abstract class `Constraint
 
 ## Installation (pip)
 
-Clone the repository, ensure your pip version is at least 22.0 and run
+Follow this procedure if you intend to install sam as a dependency for your project.
+
+Clone the repository, ensure your [pip](https://pip.pypa.io/en/stable/getting-started/) version is at least 22.0 and run
 
 ```sh
     cd sam
-    pip install .
+    pip install -e .
 ```
 
 ## Installation (dev)
 
+Do NOT follow this if you want to install sam for the preprocessing or autoconstraint model repositories.
+Follow this procedure if you intend to develop the sam repository itself. 
 
 We use conda as an environment manager and poetry as dependency manager.
 
 1. Generate a conda env 
 
-First, create and activate a basic conda env from the [env_prep.yml](./env/env.yml) file. 
+First, create and activate a basic conda env from the [env.yml](./env/env.yml) file. 
 
 Run 
 ```
@@ -107,13 +111,13 @@ To update package dependencies,
 
 ## Testing 
 
-For running all the tests:
+To run all the tests:
 
 ```
     poetry run pytest 
 ```
 
-For running a specific test: 
+To run a specific test: 
 ```
     poetry run pytest path/my_test
 ```
