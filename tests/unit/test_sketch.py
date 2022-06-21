@@ -4,6 +4,8 @@ import unittest
 import logging
 import matplotlib.pyplot as plt
 import pickle
+from pathlib import Path
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -35,6 +37,9 @@ class TestSketch(unittest.TestCase):
     def test_export(self):
         sketch = Sketch()
         sketch.add(Circle(center=[0., 5.], radius=1))
+        
+        filename = Path('tests/asset/out/')
+        filename.mkdir(parents=True, exist_ok=True)
 
         out_path = 'tests/asset/out/sketch.pkl'
         sketch.export(out_path=out_path)

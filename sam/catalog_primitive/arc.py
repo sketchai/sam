@@ -19,9 +19,9 @@ class Arc(Primitive):
         super().__init__(elt_type=PrimitiveType.ARC, status_construction=status_construction)
         self.center: Point = Point(point = center, status_construction=status_construction)
         self.radius: float = radius
-        self.angle_start: float = angles[0]  # in degrees
-        self.angle_end: float = angles[1]  # in degrees
-        self.radian: bool = radian
+        self.angle_start: float = angles[0]  
+        self.angle_end: float = angles[1]  
+        self.radian: bool = radian 
 
         # add lineage
         self.center.add_parent(self)

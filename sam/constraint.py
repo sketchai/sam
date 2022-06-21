@@ -50,19 +50,19 @@ class Constraint(abc.ABC):
     It is identified by its entity id, a unique string within the sketch.
     """
 
-    def __init__(self, elt_type: str, references: List = []):
-        self.type: str = elt_type
-        self.references: str = references
+    def __init__(self, elt_type: object, references: List = []):
+        self.type: object = elt_type
+        self.references: List = references
 
     def __repr__(self):
         l_ref = [f'ref_{i+1}: {ref}' for i, ref in enumerate(self.references)]
         refs = ', '.join(l_ref)
         return f"{self.get_name()}: {refs}"
 
-    def get_name(self) -> int:
+    def get_name(self) -> str:
         return self.type.name
 
-    def get_type(self) -> int:
+    def get_type(self) -> object:
         return self.type
 
     def _construct_mapp(self) -> object:
