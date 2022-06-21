@@ -73,7 +73,8 @@ Clone the repository, ensure your [pip](https://pip.pypa.io/en/stable/getting-st
 
 ## Installation (dev)
 
-Follow this procedure if you intend to develop the sam repository itself.
+Do NOT follow this if you want to install sam for the preprocessing or autoconstraint model repositories.
+Follow this procedure if you intend to develop the sam repository itself. 
 
 We use conda as an environment manager and poetry as dependency manager.
 
