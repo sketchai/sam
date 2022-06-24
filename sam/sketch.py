@@ -6,8 +6,7 @@ from sam.primitive import Primitive
 from sam.constraint import Constraint
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 class Sketch:
     def __init__(self):
