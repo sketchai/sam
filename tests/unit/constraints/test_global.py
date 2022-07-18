@@ -165,6 +165,13 @@ class TestConstraintGlobal(unittest.TestCase):
         self.assertEqual(expected_output, str(constraint))
         logger.debug(f'constraint: {constraint}')
 
+        # distance with a single line:
+        line = Line(pnt1= [0.1,0.2], pnt2 = [0.3, 0.7])
+        constraint = HorizontalDistance(references=[line], distance_min=5)
+        expected_output = 'HORIZONTAL_DISTANCE: ref_1: Line p1=Point P(0.1, 0.2), p2=Point P(0.3, 0.7), distance_min = 5'
+        self.assertEqual(expected_output, str(constraint))
+        logger.debug(f'constraint: {constraint}')
+
     def test_radius(self):
 
         # test de contrainte rayon sur un cercle :

@@ -41,10 +41,10 @@ Each constraint is a python class inheriting from the abstract class `Constraint
     - length (float)
 
 - **horizontalDistance**:
-    - length (float)
+    - distance_min (float)
 
 - **verticalDistance**:
-    - length (float)
+    - distance_min (float)
 
 - **radius**:
     - radius (float)
