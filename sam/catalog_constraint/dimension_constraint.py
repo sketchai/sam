@@ -28,8 +28,11 @@ class Distance(Constraint):
 
     def __repr__(self):
         elt1 = self.references[0]
-        elt2 = self.references[1]
-        return f"{self.get_name()}: ref_1: {elt1}, ref_2: {elt2}, distance_min = {self.distance_min}"
+        if len(self.references) == 2 :
+            elt2 = self.references[1]
+            return f"{self.get_name()}: ref_1: {elt1}, ref_2: {elt2}, distance_min = {self.distance_min}"
+        else :
+            return f"{self.get_name()}: ref_1: {elt1}, distance_min = {self.distance_min}"
 
     def _update_distance_min(self, distance_min: float):
         self.distance_min = distance_min
