@@ -172,6 +172,31 @@ class TestConstraintGlobal(unittest.TestCase):
         self.assertEqual(expected_output, str(constraint))
         logger.debug(f'constraint: {constraint}')
 
+    def test_verticaldistance(self):
+
+        # distance entre 2 segments (line) :
+        line_1 = Line(pnt1= [0.2,0.2], pnt2 = [0.3, 0.7])
+        line_2 = Line(pnt1= [0.0,0.2], pnt2 = [0.3, 0.7])
+        constraint = VerticalDistance(references=[line_1, line_2], distance_min=5)
+        expected_output = 'VERTICAL_DISTANCE: ref_1: Line p1=Point P(0.2, 0.2), p2=Point P(0.3, 0.7), ref_2: Line p1=Point P(0.0, 0.2), p2=Point P(0.3, 0.7), distance_min = 5'
+        self.assertEqual(expected_output, str(constraint))
+        logger.debug(f'constraint: {constraint}')
+
+        # distance entre un segment (line) et un point :
+        line = Line(pnt1= [0.1,0.2], pnt2 = [0.3, 0.7])
+        point = Point(status_construction=False, point=[0., 8.])
+        constraint = VerticalDistance(references=[line, point], distance_min=5)
+        expected_output = 'VERTICAL_DISTANCE: ref_1: Line p1=Point P(0.1, 0.2), p2=Point P(0.3, 0.7), ref_2: Point P(0.0, 8.0), distance_min = 5'
+        self.assertEqual(expected_output, str(constraint))
+        logger.debug(f'constraint: {constraint}')
+
+        # distance with a single line:
+        line = Line(pnt1= [0.1,0.2], pnt2 = [0.3, 0.7])
+        constraint = VerticalDistance(references=[line], distance_min=5)
+        expected_output = 'VERTICAL_DISTANCE: ref_1: Line p1=Point P(0.1, 0.2), p2=Point P(0.3, 0.7), distance_min = 5'
+        self.assertEqual(expected_output, str(constraint))
+        logger.debug(f'constraint: {constraint}')
+
     def test_radius(self):
 
         # test de contrainte rayon sur un cercle :
