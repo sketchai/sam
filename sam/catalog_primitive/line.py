@@ -3,8 +3,7 @@ from sam.primitive import Primitive, PrimitiveType
 from .point import Point
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 class Line(Primitive):
     """Line Primitive."""

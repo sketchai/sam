@@ -7,8 +7,7 @@ import pickle
 from pathlib import Path
 
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class TestSketch(unittest.TestCase):
